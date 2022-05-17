@@ -3,8 +3,8 @@
 #include "source.h"
 
 
-/* unget _char - function returns  the last character from input 
- * Returns - void 
+/* unget _char - function returns  the last character from input
+ * Returns - void
 */
 
 void unget_char(struct source_s *src)

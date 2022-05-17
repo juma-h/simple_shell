@@ -6,12 +6,16 @@
 #include "source.h"
 #include "parser.h"
 #include "executor.h"
+#include "source.h"
+#include "parser.h"
+#include "backend.h"
 
 /**
  * main - loop function to get prompt
  * and read command
  * Return: Always 0.
  */
+
 
 int main(int argc, char **argv)
 {
@@ -52,6 +56,7 @@ int main(int argc, char **argv)
 
     exit(EXIT_SUCCESS);
 }
+initsh();
 
 
 /*read command function */
@@ -87,8 +92,12 @@ char *read_cmd(void)
 
         if(!ptr)
         {
-            fprintf(stderr, "error: failed to alloc buffer: %s\n", strerror(errno));
-            return NULL;
+        struct source_s src;
+        src.buffer   = cmd;
+        src.bufsize  = strlen(cmd);
+        src.curpos   = INIT_SRC_POS;
+        parse_and_execute(&src);
+        return NULL;
         }
 
         strcpy(ptr+ptrlen, buf);
@@ -110,6 +119,35 @@ char *read_cmd(void)
 
     return ptr;
   
+}
+
+/*function to parse and execute*/
+int parse_and_execute(struct source_s *src)
+{
+    skip_white_spaces(src);
+
+    struct token_s *tok = tokenize(src);
+
+    if(tok == &eof_token)
+    {
+        return 0;
+    }
+
+    while(tok && tok != &eof_token)
+    {
+        struct node_s *cmd = parse_simple_command(tok);
+
+        if(!cmd)
+        {
+            break;
+        }
+
+        do_simple_command(cmd);
+        free_node_tree(cmd);
+        tok = tokenize(src);
+    }
+
+    return 1;
 }
 
 
