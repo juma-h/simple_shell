@@ -1,28 +1,12 @@
-#ifndef _SHELL
-#define _SHELL
+#ifndef SHELL_H
+#define SHELL_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <wait.h>
-#include <fcntl.h>
-#include <dirent.h>
-#include <signal.h>
+#include "source.h"
 
-/**
- * struct list - linked list for environmental variables
- * @var: holds environmental variable string
- * @next: points to next node
- */
-typedef struct list
-{
-	char *var;
-	struct list *next;
+void print_prompt1(void);
+void print_prompt2(void);
 
-} list_t;
+char *read_cmd(void);
+int  parse_and_execute(struct source_s *src);
 
 #endif
