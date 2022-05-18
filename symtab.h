@@ -2,6 +2,7 @@
 #define SYMTAB_H
 
 #include "../node.h"
+#include "symtab/symtab.h"
 
 #define MAX_SYMTAB	256
 

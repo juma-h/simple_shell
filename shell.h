@@ -2,7 +2,7 @@
 #define SHELL_H
 
 #include "source.h"
-#include "source.h"
+
 
 void initsh(void);
 int  parse_and_execute(struct source_s *src);
@@ -20,6 +20,16 @@ struct builtin_s
     char *name;    /* utility name */
     int (*func)(int argc, char **argv); /* function to call to execute the utility */
 };
+
+struct word_s
+{
+    char  *data;
+    int    len;
+    struct word_s *next;
+};
+
+struct word_s *make_word(char *str);
+void free_all_words(struct word_s *first);
 
 /* the list of builtin utilities */
 extern struct builtin_s builtins[];

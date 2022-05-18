@@ -6,9 +6,7 @@
 #include "source.h"
 #include "parser.h"
 #include "executor.h"
-#include "source.h"
-#include "parser.h"
-#include "backend.h"
+
 
 /**
  * main - loop function to get prompt
@@ -151,31 +149,4 @@ int parse_and_execute(struct source_s *src)
 }
 
 
-/*function to split and execute commands*/
 
-int parse_and_execute(struct source_s *src)
-{
-    skip_white_spaces(src);
-
-    struct token_s *tok = tokenize(src);
-
-    if(tok == &eof_token)
-    {
-        return 0;
-    }
-
-    while(tok && tok != &eof_token)
-    {
-        struct node_s *cmd = parse_simple_command(tok);
-
-        if(!cmd)
-        {
-            break;
-        }
-
-        do_simple_command(cmd);
-        free_node_tree(cmd);
-        tok = tokenize(src);
-    }
-    return 1;
-}
